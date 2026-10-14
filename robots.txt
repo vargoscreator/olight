@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /account.html
+Disallow: /cabinet.html
+Disallow: /orders.html
+Disallow: /profile.html
+Disallow: /favorites.html
+Disallow: /settings.html
+Disallow: /checkout.html
+Disallow: /order-success.html
+Disallow: /order-fail.html
+Disallow: /*?cart=
+
+Sitemap: https://olight.ua/sitemap.xml
