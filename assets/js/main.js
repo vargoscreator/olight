@@ -3,6 +3,12 @@
 (() => {
     'use strict';
 
+    // iOS Safari zooms the page when a field under 16px gets focus; fields follow the 14px design,
+    // so cap the scale there. iOS still allows pinch zoom, and other browsers keep the default viewport.
+    if (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        document.querySelector('meta[name="viewport"]')?.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1');
+    }
+
     // ==========================================================================
     // slider
     // ==========================================================================
@@ -1022,6 +1028,22 @@
         });
     }
 
+    // Model range: demo variants all point to this page, so switch the selection in place.
+    // With real product URLs the links navigate as usual.
+    function initModels() {
+        document.querySelectorAll('[data-js="models"]').forEach((list) => {
+            list.addEventListener('click', (event) => {
+                const link = event.target.closest('a');
+                if (!link || link.pathname !== window.location.pathname) {
+                    return;
+                }
+                event.preventDefault();
+                list.querySelectorAll('a[aria-current]').forEach((current) => current.removeAttribute('aria-current'));
+                link.setAttribute('aria-current', 'page');
+            });
+        });
+    }
+
     function initProductPage() {
         if (!document.querySelector('.product')) {
             return;
@@ -1032,6 +1054,7 @@
         initFlood();
         initReviewLikes();
         initModesProgress();
+        initModels();
     }
 
     // ==========================================================================
